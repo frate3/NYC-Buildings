@@ -9,10 +9,10 @@ from bokeh.models import HoverTool
 from bokeh.models import CustomJS, Select
 from bokeh.io import show
 from bokeh.layouts import layout
-from bokeh.models import Div, RangeSlider, Spinner
+from bokeh.models import Div, RangeSlider, Spinner, Paragraph,Title
 
 api_key = 'AIzaSyAVM93QZCQay8sq1vFf5KGj47PwQVt3nns'
-bokeh_width, bokeh_height = 800,600
+bokeh_width, bokeh_height = 1200,1000
 
  
 named = pd.read_csv("named_buildings.csv", index_col=0)
@@ -46,13 +46,21 @@ def plot(lat, lng, zoom=10, map_type='roadmap',title=''):
     return p,points
 
 
-select = Select(title="Option:", value="Empire State Building", options=["Empire State Building", "Chrysler Building"])
+select = Select(title="Choose a Building:", value="Empire State Building", options=["Empire State Building", "Chrysler Building"])
 select.js_on_change("value", CustomJS(code="""console.log('select: value=' + this.value, this.toString())"""))
 
 wtc = named_df.sort_values('HEIGHTROOF',ascending=False).iloc[0]
-p, points= plot(wtc['lat'],wtc['lon'], zoom=15)
+p, points= plot(wtc['lat'],wtc['lon'], zoom=15, title="NYC Buildings")
 # This final command is required to launch the plot in the browser
+p.title.align = "center"
+p.title.text_color = "black"
+p.title.text_font_size = "25px"
 
+
+title = Div(text="<h1>NYC BUILDING VISUALIZATION</h1>")
+
+para = Paragraph(text="""Used NYC building data to display named buildings. The circle's size relates to the height of the building.""",
+width=1000, height=50)
 
 spinner = Spinner(
     title="Circle size",
@@ -66,7 +74,9 @@ spinner.js_link("value", points.glyph, "size")
 
 
 layout = layout([
-    [spinner],
+    [title],
+    [para],
+    [spinner, select],
     [p]
 ])
 
