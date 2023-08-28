@@ -11,7 +11,7 @@ from bokeh.io import show
 from bokeh.layouts import layout
 from bokeh.models import Div, RangeSlider, Spinner, Paragraph,Title
 
-api_key = 'AIzaSyAVM93QZCQay8sq1vFf5KGj47PwQVt3nns'
+api_key = ''
 bokeh_width, bokeh_height = 1200,1000
 
  
