@@ -57,6 +57,20 @@ heights = st.sidebar.slider(
 named_df_filtered = named_df[named_df['HEIGHTROOF'].between(heights[0], heights[1])]
 
 
+@st.cache_data
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode('utf-8')
+
+csv = convert_df(named_df)
+
+st.sidebar.download_button(
+    label="Download data as CSV",
+    data=csv,
+    file_name='named_df.csv',
+    mime='text/csv',
+)
+
 
 ### MAIN APP
 
